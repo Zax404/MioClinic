@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WiSAR · Nuevo Experimento — WIS-0248</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+<style>
+/* ═══════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════ */
+:root {
+  --navy:        #060f1e;
+  --navy-1:      #0c1e38;
+  --navy-2:      #122542;
+  --navy-3:      #1a3258;
+  --blue:        #2d6fe0;
+  --blue-2:      #4d8ef5;
+  --blue-pale:   #d6e6ff;
+  --teal:        #14a07a;
+  --teal-pale:   #ccf0e4;
+  --red:         #d43f3f;
+  --red-pale:    #fce8e8;
+  --amber:       #c07c1a;
+  --amber-pale:  #fef3dc;
+  --ink:         #0e1a2b;
+  --ink-2:       #3a4e66;
+  --ink-3:       #7a90a8;
+  --surf:        #ffffff;
+  --surf-1:      #f5f7fa;
+  --surf-2:      #edf0f5;
+  --border:      #d8dfe8;
+  --border-2:    #eaecf0;
+
+  /* Zone palette */
+  --base-a:      #a0260f;
+  --base-b:      #c43018;
+  --base-pale:   #fbe8e5;
+  --base-mid:    #e8c0bb;
+  --medio-a:     #7b1e3a;
+  --medio-b:     #a02850;
+  --medio-pale:  #fae8ee;
+  --medio-mid:   #e8b8c8;
+  --apice-a:     #3a1e6e;
+  --apice-b:     #5030a0;
+  --apice-pale:  #ece8f8;
+  --apice-mid:   #c8bcec;
+
+  --r-sm: 6px; --r: 10px; --r-lg: 14px; --r-xl: 20px; --r-2xl: 28px;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+
+  --sh-sm: 0 1px 3px rgba(6,15,30,.07), 0 1px 2px rgba(6,15,30,.05);
+  --sh-md: 0 4px 14px rgba(6,15,30,.1), 0 2px 4px rgba(6,15,30,.06);
+  --sh-lg: 0 10px 30px rgba(6,15,30,.14), 0 4px 8px rgba(6,15,30,.07);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--surf-1);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════════
+   TOP NAV
+═══════════════════════════════════════════ */
+.topnav {
+  background: var(--navy);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.logo {
+  display: flex; align-items: center; gap: 9px;
+  text-decoration: none; flex-shrink: 0;
+}
+.logo-mark {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--blue), var(--blue-2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; color: #fff;
+  box-shadow: 0 2px 8px rgba(45,111,224,.4);
+}
+.logo-name {
+  font-family: var(--font-head);
+  font-size: 16px; font-weight: 800;
+  color: #fff; letter-spacing: .02em;
+}
+.nav-sep { color: rgba(255,255,255,.2); font-size: 16px; }
+.nav-crumb {
+  font-size: 13px; color: rgba(255,255,255,.4);
+  cursor: pointer; transition: color .15s;
+}
+.nav-crumb:hover { color: rgba(255,255,255,.8); }
+.nav-crumb.active { color: rgba(255,255,255,.85); font-weight: 500; }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.nav-id {
+  font-family: var(--font-mono); font-size: 11px;
+  color: rgba(255,255,255,.35);
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  padding: 4px 10px; border-radius: 5px;
+}
+.btn-nav {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 13px; font-size: 12px; font-weight: 500;
+  border-radius: var(--r);
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.07);
+  color: rgba(255,255,255,.6);
+  cursor: pointer; font-family: var(--font-body);
+  transition: all .15s;
+}
+.btn-nav:hover { background: rgba(255,255,255,.14); color: #fff; }
+.btn-nav i { font-size: 15px; }
+
+/* ═══════════════════════════════════════════
+   PHASE STEPPER — HORIZONTAL TOP BAR
+═══════════════════════════════════════════ */
+.stepper-wrap {
+  background: var(--surf);
+  border-bottom: 1px solid var(--border-2);
+  padding: 0 28px;
+}
+.stepper {
+  display: flex; align-items: stretch;
+  height: 60px; gap: 0;
+}
+.step {
+  display: flex; align-items: center; gap: 11px;
+  flex: 1; position: relative;
+  cursor: default; padding: 0 6px;
+}
+.step::after {
+  content: '';
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  width: 1px; height: 28px;
+  background: var(--border-2);
+}
+.step:last-child::after { display: none; }
+.step-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+  font-family: var(--font-head);
+  flex-shrink: 0;
+  border: 2px solid var(--border);
+  background: var(--surf-1);
+  color: var(--ink-3);
+  transition: all .3s;
+}
+.step-num.done { background: var(--navy); border-color: var(--navy); color: #fff; }
+.step-num.active { background: var(--blue-pale); border-color: var(--blue); color: var(--blue); }
+.step-text {}
+.step-label {
+  font-family: var(--font-head);
+  font-size: 12px; font-weight: 600;
+  color: var(--ink-3); line-height: 1;
+}
+.step-label.active { color: var(--ink); }
+.step-sub { font-size: 10px; color: var(--ink-3); margin-top: 3px; }
+
+/* ═══════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════ */
+.workspace { min-height: calc(100vh - 112px); }
+.phase-body { padding: 24px 28px 100px; max-width: 1200px; margin: 0 auto; }
+.action-footer {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--surf);
+  border-top: 1px solid var(--border-2);
+  padding: 13px 28px;
+  display: flex; align-items: center; gap: 10px;
+  z-index: 90;
+  box-shadow: 0 -4px 20px rgba(6,15,30,.08);
+}
+.action-right { margin-left: auto; display: flex; gap: 10px; }
+
+/* ═══════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 16px; font-size: 13px; font-weight: 500;
+  border-radius: var(--r); border: 1px solid var(--border);
+  background: var(--surf); color: var(--ink);
+  cursor: pointer; font-family: var(--font-body);
+  transition: all .15s; white-space: nowrap;
+}
+.btn:hover { background: var(--surf-2); }
+.btn-primary {
+  background: var(--navy); color: #fff; border-color: var(--navy);
+  box-shadow: 0 2px 8px rgba(6,15,30,.22);
+}
+.btn-primary:hover { background: var(--navy-2); }
+.btn-success { background: #15803d; color: #fff; border-color: #15803d; }
+.btn-success:hover { background: #166534; }
+.btn-ghost { border-color: transparent; background: transparent; color: var(--ink-2); }
+.btn-ghost:hover { background: var(--surf-2); border-color: var(--border); }
+.btn i { font-size: 15px; }
+
+/* ═══════════════════════════════════════════
+   CARDS
+═══════════════════════════════════════════ */
+.card {
+  background: var(--surf);
+  border: 1px solid var(--border-2);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-sm);
+  overflow: hidden;
+}
+.card-head {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border-2);
+  display: flex; align-items: center; gap: 8px;
+}
+.card-head h3 { font-size: 13px; font-weight: 600; flex: 1; }
+.card-head i { font-size: 16px; color: var(--ink-3); }
+.card-body { padding: 14px 16px; }
+
+/* ═══════════════════════════════════════════
+   ALERTS / NOTICES
+═══════════════════════════════════════════ */
+.notice {
+  display: flex; align-items: flex-start; gap: 9px;
+  padding: 11px 14px; border-radius: var(--r);
+  font-size: 12px; margin-bottom: 18px;
+}
+.notice i { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+.notice.info { background: #e8f0fd; border: 1px solid #b8d0f8; color: #1445a0; }
+.notice.ok   { background: var(--teal-pale); border: 1px solid #8ddcc0; color: #0b6040; }
+.notice.warn { background: var(--amber-pale); border: 1px solid #f5d99a; color: #8a5600; }
+
+/* ═══════════════════════════════════════════
+   PHASE 1 — UPLOAD
+═══════════════════════════════════════════ */
+.upload-area {
+  border: 2px dashed var(--border);
+  border-radius: var(--r-xl);
+  padding: 40px 24px;
+  text-align: center;
+  background: var(--surf-1);
+  cursor: pointer;
+  transition: all .22s;
+  margin-bottom: 22px;
+  position: relative; overflow: hidden;
+}
+.upload-area::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(45,111,224,.06) 0%, transparent 70%);
+  opacity: 0; transition: opacity .3s;
+}
+.upload-area:hover::before, .upload-area.over::before { opacity: 1; }
+.upload-area:hover, .upload-area.over {
+  border-color: var(--blue);
+  background: #f0f5ff;
+}
+.upload-icon {
+  width: 56px; height: 56px;
+  border-radius: var(--r-lg);
+  background: var(--surf-2);
+  border: 1px solid var(--border);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 26px; color: var(--ink-3);
+  margin-bottom: 14px;
+  transition: all .2s;
+}
+.upload-area:hover .upload-icon, .upload-area.over .upload-icon {
+  background: var(--blue-pale); border-color: var(--blue); color: var(--blue);
+}
+.upload-title { font-family: var(--font-head); font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.upload-sub { font-size: 12px; color: var(--ink-3); margin-bottom: 14px; }
+.fmt-tags { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; }
+.fmt-tag {
+  font-size: 10px; font-weight: 600; padding: 3px 8px;
+  border-radius: 4px; background: var(--surf-2);
+  border: 1px solid var(--border);
+  font-family: var(--font-mono); color: var(--ink-3);
+}
+
+/* Image grid */
+.section-label {
+  font-family: var(--font-head);
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .8px; color: var(--ink-3);
+  margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border-2); }
+
+.img-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px; margin-bottom: 16px;
+}
+.img-card {
+  background: var(--surf); border: 1.5px solid var(--border-2);
+  border-radius: var(--r-lg); overflow: hidden;
+  transition: all .18s; cursor: pointer;
+}
+.img-card:hover { box-shadow: var(--sh-md); border-color: var(--blue); transform: translateY(-1px); }
+.img-card.selected { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(45,111,224,.12); }
+.img-thumb {
+  background: #0a0d14;
+  height: 110px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.img-check {
+  position: absolute; top: 6px; right: 6px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--teal); border: 1.5px solid #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: #fff;
+}
+.img-info { padding: 8px 10px; }
+.img-name { font-size: 11px; font-weight: 600; font-family: var(--font-mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
+.img-meta { font-size: 10px; color: var(--ink-3); display: flex; justify-content: space-between; }
+.img-zone { padding: 5px 10px; border-top: 1px solid var(--border-2); display: flex; align-items: center; justify-content: space-between; }
+
+/* Badges */
+.badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 2px 8px; border-radius: 5px; font-size: 10px; font-weight: 600;
+}
+.b-base  { background: var(--base-pale);  color: var(--base-a); }
+.b-medio { background: var(--medio-pale); color: var(--medio-a); }
+.b-apice { background: var(--apice-pale); color: var(--apice-a); }
+.b-ok    { background: var(--teal-pale);  color: #0b6040; }
+.b-warn  { background: var(--amber-pale); color: #8a5600; }
+.b-err   { background: var(--red-pale);   color: #8a2020; }
+.b-gray  { background: var(--surf-2);     color: var(--ink-3); }
+
+/* ═══════════════════════════════════════════
+   PHASE 2 — CLASSIFY
+═══════════════════════════════════════════ */
+.classify-grid { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+
+.zone-panel { border-radius: var(--r-xl); overflow: hidden; border: 1px solid; margin-bottom: 14px; }
+.zone-panel.base  { border-color: var(--base-mid); }
+.zone-panel.medio { border-color: var(--medio-mid); }
+.zone-panel.apice { border-color: var(--apice-mid); }
+
+.zone-header {
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.zone-panel.base  .zone-header { background: linear-gradient(90deg, var(--base-a), var(--base-b)); }
+.zone-panel.medio .zone-header { background: linear-gradient(90deg, var(--medio-a), var(--medio-b)); }
+.zone-panel.apice .zone-header { background: linear-gradient(90deg, var(--apice-a), var(--apice-b)); }
+
+.zone-header-icon { font-size: 18px; color: rgba(255,255,255,.6); }
+.zone-header-title { font-family: var(--font-head); font-size: 14px; font-weight: 700; color: #fff; flex: 1; }
+.zone-header-sub { font-size: 10px; color: rgba(255,255,255,.55); margin-top: 1px; }
+.zone-count {
+  background: rgba(255,255,255,.18); color: #fff;
+  font-size: 11px; font-weight: 700; font-family: var(--font-mono);
+  padding: 2px 9px; border-radius: 10px;
+}
+
+.zone-slots {
+  padding: 12px;
+  display: flex; gap: 10px; flex-wrap: wrap;
+  min-height: 72px;
+  background: var(--surf);
+}
+.zone-empty-msg { color: var(--ink-3); font-size: 12px; display: flex; align-items: center; gap: 6px; padding: 8px; width: 100%; opacity: .6; }
+
+.zone-slice-item {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surf); border: 1px solid var(--border-2);
+  border-radius: var(--r); padding: 8px 12px;
+  flex: 1; min-width: 200px; cursor: grab;
+  transition: box-shadow .15s;
+}
+.zone-slice-item:hover { box-shadow: var(--sh-sm); }
+.drag-handle { color: var(--ink-3); font-size: 14px; cursor: grab; }
+.zsi-name { font-size: 12px; font-weight: 600; font-family: var(--font-mono); flex: 1; }
+.zsi-size { font-size: 10px; color: var(--ink-3); }
+.ai-tag {
+  display: flex; align-items: center; gap: 3px;
+  font-size: 10px; color: var(--blue);
+  background: var(--blue-pale); padding: 2px 7px; border-radius: 8px;
+}
+.zone-sel {
+  padding: 4px 8px; font-size: 11px; border-radius: var(--r-sm);
+  border: 1px solid var(--border); background: var(--surf);
+  cursor: pointer; font-family: var(--font-body); color: var(--ink);
+}
+
+/* Heart anatomy mini card */
+.anatomy-card { position: sticky; top: 76px; }
+.anatomy-zone-list { padding: 0 14px 14px; display: flex; flex-direction: column; gap: 7px; }
+.az-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 11px; border-radius: var(--r); border: 1px solid; font-size: 12px;
+  transition: all .25s;
+}
+.az-row.base  { border-color: var(--base-mid);  background: var(--base-pale); }
+.az-row.medio { border-color: var(--medio-mid); background: var(--medio-pale); }
+.az-row.apice { border-color: var(--apice-mid); background: var(--apice-pale); }
+.az-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.az-dot.base  { background: var(--base-a); }
+.az-dot.medio { background: var(--medio-a); }
+.az-dot.apice { background: var(--apice-a); }
+.az-name { font-weight: 600; flex: 1; }
+.az-count { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); }
+
+/* ═══════════════════════════════════════════
+   PHASE 3 — RECONSTRUCTION
+═══════════════════════════════════════════ */
+.recon-layout { display: grid; grid-template-columns: 1fr 360px; gap: 24px; }
+
+.heart-display {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 20px 0;
+}
+.heart-label {
+  font-family: var(--font-head); font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px; color: var(--ink-3);
+  margin-bottom: 18px;
+  display: flex; align-items: center; gap: 10px;
+}
+.heart-label::before, .heart-label::after { content: ''; flex: 1; height: 1px; background: var(--border-2); }
+.heart-legend { display: flex; gap: 18px; margin-top: 16px; flex-wrap: wrap; justify-content: center; }
+.hl-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--ink-2); }
+.hl-dot { width: 9px; height: 9px; border-radius: 50%; }
+
+/* Slice strip */
+.strip-title {
+  font-family: var(--font-head);
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px;
+  color: var(--ink-3); margin: 22px 0 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.strip-title::after { content: ''; flex: 1; height: 1px; background: var(--border-2); }
+.strip { display: flex; gap: 0; align-items: flex-end; overflow-x: auto; padding-bottom: 12px; padding-top: 6px; }
+.strip::-webkit-scrollbar { height: 3px; }
+.strip::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.strip-seg { display: flex; align-items: flex-end; }
+.strip-conn { height: 2px; background: rgba(160,38,15,.2); width: 14px; align-self: center; flex-shrink: 0; }
+.strip-item { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.strip-lbl { font-size: 9px; font-family: var(--font-mono); color: var(--ink-3); text-align: center; }
+.strip-zone { font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 3px; text-transform: uppercase; letter-spacing: .4px; }
+.strip-zone.base  { background: var(--base-pale);  color: var(--base-a); }
+.strip-zone.medio { background: var(--medio-pale); color: var(--medio-a); }
+.strip-zone.apice { background: var(--apice-pale); color: var(--apice-a); }
+.strip-pct { font-size: 9px; color: var(--red); font-family: var(--font-mono); font-weight: 500; }
+
+/* Stat cards */
+.stat-cards { display: flex; flex-direction: column; gap: 12px; }
+.stat-card { border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--border-2); box-shadow: var(--sh-sm); }
+.scard-head { padding: 11px 15px; display: flex; align-items: center; gap: 9px; }
+.scard-head.base  { background: linear-gradient(90deg, var(--base-a),  var(--base-b)); }
+.scard-head.medio { background: linear-gradient(90deg, var(--medio-a), var(--medio-b)); }
+.scard-head.apice { background: linear-gradient(90deg, var(--apice-a), var(--apice-b)); }
+.scard-title { font-family: var(--font-head); font-size: 13px; font-weight: 700; color: #fff; flex: 1; }
+.scard-icon { font-size: 18px; color: rgba(255,255,255,.45); }
+.scard-body { padding: 12px 15px; background: var(--surf); display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sv { font-size: 18px; font-weight: 600; font-family: var(--font-mono); }
+.sl { font-size: 10px; color: var(--ink-3); margin-top: 2px; }
+.prog-wrap { padding: 0 15px 12px; background: var(--surf); }
+.prog-row { display: flex; justify-content: space-between; font-size: 10px; color: var(--ink-3); margin-bottom: 4px; }
+.prog-track { height: 6px; background: var(--surf-2); border-radius: 3px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 3px; transition: width .8s cubic-bezier(.4,0,.2,1); }
+.prog-fill.base  { background: linear-gradient(90deg, var(--base-a),  var(--base-b)); }
+.prog-fill.medio { background: linear-gradient(90deg, var(--medio-a), var(--medio-b)); }
+.prog-fill.apice { background: linear-gradient(90deg, var(--apice-a), var(--apice-b)); }
+
+.recon-ready {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: var(--teal-pale); border: 1px solid #8ddcc0;
+  border-radius: var(--r-lg); padding: 13px 15px;
+  font-size: 12px; color: #0b6040; margin-top: 6px;
+}
+.recon-ready i { font-size: 16px; flex-shrink: 0; }
+
+/* ═══════════════════════════════════════════
+   PHASE 4 — ANALYSIS
+═══════════════════════════════════════════ */
+.ai-stage {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; padding: 28px 0;
+}
+.ai-orb {
+  width: 76px; height: 76px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--blue-2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px; color: #fff;
+  margin: 0 auto 20px;
+  animation: orb-pulse 2.2s ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(45,111,224,.35);
+}
+@keyframes orb-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(45,111,224,.35); }
+  50%       { box-shadow: 0 0 0 16px rgba(45,111,224,0); }
+}
+.ai-title { font-family: var(--font-head); font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.ai-sub { font-size: 13px; color: var(--ink-3); max-width: 420px; margin: 0 auto 22px; }
+.ai-bar-wrap { width: 100%; max-width: 460px; margin: 0 auto 22px; }
+.ai-bar-row { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 5px; }
+.ai-bar-row span { color: var(--ink-3); }
+.ai-bar-row strong { font-family: var(--font-mono); color: var(--blue); }
+.ai-steps { text-align: left; max-width: 460px; width: 100%; }
+.ai-step {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid var(--border-2);
+  font-size: 12px; color: var(--ink-3);
+  opacity: .3; transition: opacity .35s;
+}
+.ai-step:last-child { border-bottom: none; }
+.ai-step.active, .ai-step.done { opacity: 1; color: var(--ink); }
+.ai-step i { font-size: 15px; flex-shrink: 0; }
+.ai-step.done i { color: var(--teal); }
+.ai-step.active i { color: var(--blue); }
+
+/* Results */
+.results-wrap { display: grid; grid-template-columns: 1fr 360px; gap: 24px; margin-top: 0; }
+.done-banner {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--teal-pale); border: 1px solid #8ddcc0;
+  border-radius: var(--r-lg); padding: 16px 18px; margin-bottom: 18px;
+}
+.done-icon {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: #16a34a; color: #fff; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+}
+.done-title { font-family: var(--font-head); font-size: 14px; font-weight: 700; color: #0b6040; margin-bottom: 3px; }
+.done-sub { font-size: 12px; color: #1a5e40; }
+
+.result-zone {
+  border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--border-2);
+  box-shadow: var(--sh-sm); margin-bottom: 10px;
+}
+.rz-head { padding: 11px 15px; display: flex; align-items: flex-start; justify-content: space-between; }
+.rz-head.base  { background: linear-gradient(90deg, var(--base-a),  var(--base-b)); }
+.rz-head.medio { background: linear-gradient(90deg, var(--medio-a), var(--medio-b)); }
+.rz-head.apice { background: linear-gradient(90deg, var(--apice-a), var(--apice-b)); }
+.rz-title { font-family: var(--font-head); font-size: 13px; font-weight: 700; color: #fff; }
+.rz-sub   { font-size: 10px; color: rgba(255,255,255,.55); margin-top: 2px; }
+.rz-pct   { font-family: var(--font-mono); font-size: 22px; font-weight: 700; color: #fff; }
+.rz-body  { padding: 12px 15px; background: var(--surf); }
+.bar-row  { margin-bottom: 10px; }
+.bar-lbls { display: flex; justify-content: space-between; font-size: 10px; color: var(--ink-3); margin-bottom: 4px; }
+.bar-lbls strong { font-family: var(--font-mono); color: var(--red); }
+.bar-track { height: 7px; background: var(--surf-2); border-radius: 3px; overflow: hidden; }
+.bar-fill  { height: 100%; border-radius: 3px; }
+.bar-fill.base  { background: linear-gradient(90deg, var(--base-a),  #e74c3c); }
+.bar-fill.medio { background: linear-gradient(90deg, var(--medio-a), #cb4335); }
+.bar-fill.apice { background: linear-gradient(90deg, var(--apice-a), #8e44ad); }
+.rz-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.rz-metric { text-align: center; padding: 8px; background: var(--surf-1); border-radius: var(--r-sm); border: 1px solid var(--border-2); }
+.rz-mval { font-size: 16px; font-weight: 600; font-family: var(--font-mono); }
+.rz-mlbl { font-size: 9px; color: var(--ink-3); margin-top: 2px; }
+
+/* Global total card */
+.total-card {
+  border-radius: var(--r-lg); overflow: hidden;
+  border: 1px solid rgba(255,255,255,.06);
+  background: var(--navy); box-shadow: var(--sh-lg);
+}
+.tc-head { padding: 14px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,.07); }
+.tc-head h3 { font-family: var(--font-head); font-size: 14px; font-weight: 700; color: #fff; flex: 1; }
+.tc-pct { font-family: var(--font-mono); font-size: 30px; font-weight: 700; color: #f08080; line-height: 1; }
+.tc-pct-lbl { font-size: 9px; color: rgba(255,255,255,.35); margin-top: 3px; }
+.tc-body { padding: 12px 18px 16px; }
+.tc-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,.06); font-size: 12px; color: rgba(255,255,255,.55); }
+.tc-row:last-child { border-bottom: none; }
+.tc-row strong { color: #fff; font-family: var(--font-mono); }
+
+/* Validation card */
+.val-card { border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--border-2); box-shadow: var(--sh-sm); margin-top: 12px; }
+.val-head { padding: 12px 15px; border-bottom: 1px solid var(--border-2); display: flex; align-items: center; gap: 8px; }
+.val-head h3 { font-size: 13px; font-weight: 600; flex: 1; }
+.val-body { padding: 14px 15px; background: var(--surf); }
+.radio-opt {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 12px; border-radius: var(--r);
+  border: 1.5px solid var(--border); cursor: pointer;
+  margin-bottom: 8px; transition: all .15s;
+}
+.radio-opt.sel-ok    { border-color: var(--teal);  background: var(--teal-pale); }
+.radio-opt.sel-warn  { border-color: var(--amber); background: var(--amber-pale); }
+.radio-opt.sel-err   { border-color: var(--red);   background: var(--red-pale); }
+.radio-opt-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.radio-opt-sub   { font-size: 11px; color: var(--ink-3); }
+.field-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--ink-3); margin-bottom: 5px; }
+.field-input {
+  width: 100%; padding: 8px 11px; font-size: 13px;
+  border: 1px solid var(--border); border-radius: var(--r);
+  font-family: var(--font-body); background: var(--surf); color: var(--ink);
+  margin-bottom: 12px; transition: border-color .15s;
+}
+.field-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(45,111,224,.1); }
+textarea.field-input { resize: vertical; min-height: 76px; }
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fu { animation: fadeUp .38s ease both; }
+.d1 { animation-delay: .04s; } .d2 { animation-delay: .08s; }
+.d3 { animation-delay: .12s; } .d4 { animation-delay: .16s; }
+.d5 { animation-delay: .20s; }
+
+/* Zone animation */
+@keyframes zone-breathe { 0%,100%{opacity:1}50%{opacity:.75} }
+.zone-live { animation: zone-breathe 2.4s ease-in-out infinite; }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media(max-width: 900px) {
+  .classify-grid, .recon-layout, .results-wrap { grid-template-columns: 1fr; }
+  .anatomy-card { position: static; }
+  .phase-body { padding: 16px 16px 100px; }
+}
+@media(max-width: 600px) {
+  .step-text .step-sub { display: none; }
+  .img-grid { grid-template-columns: repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP NAV ═══ -->
+<nav class="topnav">
+  <a href="#" class="logo">
+    <div class="logo-mark"><i class="ti ti-heart-rate-monitor"></i></div>
+    <span class="logo-name">WiSAR</span>
+  </a>
+  <span class="nav-sep">/</span>
+  <span class="nav-crumb" onclick="alert('Mis experimentos')">Mis experimentos</span>
+  <span class="nav-sep">/</span>
+  <span class="nav-crumb active">Nuevo experimento</span>
+  <div class="nav-right">
+    <span class="nav-id">WIS-0248</span>
+    <button class="btn-nav"><i class="ti ti-device-floppy"></i> Guardar borrador</button>
+    <button class="btn-nav"><i class="ti ti-x"></i></button>
+  </div>
+</nav>
+
+<!-- ═══ STEPPER ═══ -->
+<div class="stepper-wrap">
+  <div class="stepper">
+    <div class="step">
+      <div class="step-num active" id="sn1">1</div>
+      <div class="step-text">
+        <div class="step-label active" id="sl1">Subir imágenes</div>
+        <div class="step-sub">Cargar cortes TTC</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num" id="sn2">2</div>
+      <div class="step-text">
+        <div class="step-label" id="sl2">Clasificar cortes</div>
+        <div class="step-sub">Base · Medio · Ápice</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num" id="sn3">3</div>
+      <div class="step-text">
+        <div class="step-label" id="sl3">Reconstrucción</div>
+        <div class="step-sub">Figura completa</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num" id="sn4">4</div>
+      <div class="step-text">
+        <div class="step-label" id="sl4">Análisis de necrosis</div>
+        <div class="step-sub">Resultados por zona</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ WORKSPACE ═══ -->
+<div class="workspace">
+<div class="phase-body">
+
+<!-- ══ PHASE 1 ══ -->
+<div id="ph1" class="fu">
+  <div class="notice info d1">
+    <i class="ti ti-info-circle"></i>
+    <span>Sube todos los cortes transversales del corazón del mismo experimento. El sistema los ordenará automáticamente de mayor a menor para clasificarlos por zona anatómica (Base → Ápice).</span>
+  </div>
+
+  <div class="upload-area d2" id="drop-zone" onclick="doUpload()"
+       ondragover="event.preventDefault();this.classList.add('over')"
+       ondragleave="this.classList.remove('over')">
+    <div class="upload-icon"><i class="ti ti-cloud-upload"></i></div>
+    <div class="upload-title">Arrastra los cortes aquí o haz clic para seleccionar</div>
+    <div class="upload-sub">Sube todos los cortes del mismo corazón — se ordenarán automáticamente por tamaño</div>
+    <div class="fmt-tags">
+      <span class="fmt-tag">TIFF</span>
+      <span class="fmt-tag">PNG</span>
+      <span class="fmt-tag">JPG</span>
+      <span class="fmt-tag">≥512×512 px</span>
+      <span class="fmt-tag">RGB</span>
+    </div>
+  </div>
+
+  <div class="section-label d3">Cortes cargados <span style="font-weight:400;font-size:11px;margin-left:6px;color:var(--ink-3)">5 imágenes · 12.3 MB</span></div>
+
+  <div class="img-grid d4" id="img-grid-1"></div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0" class="d5">
+    <span style="font-size:12px;color:var(--ink-3);display:flex;align-items:center;gap:6px">
+      <i class="ti ti-circle-check" style="color:var(--teal)"></i>
+      Todas las imágenes pasaron la verificación de calidad
+    </span>
+    <button class="btn btn-ghost" style="padding:6px 12px;font-size:11px"><i class="ti ti-refresh" style="font-size:13px"></i> Re-verificar</button>
+  </div>
+</div>
+
+<!-- ══ PHASE 2 ══ -->
+<div id="ph2" style="display:none" class="fu">
+  <div class="notice ok">
+    <i class="ti ti-brain"></i>
+    <span>La IA clasificó los cortes según su tamaño. Los más grandes corresponden a la <strong>Base</strong> y los más pequeños al <strong>Ápice</strong>. Puedes corregir la clasificación usando el selector en cada corte.</span>
+  </div>
+  <div class="classify-grid">
+    <div>
+      <!-- BASE -->
+      <div class="zone-panel base">
+        <div class="zone-header">
+          <i class="ti ti-square-rounded-top zone-header-icon"></i>
+          <div>
+            <div class="zone-header-title">Zona Base</div>
+            <div class="zone-header-sub">Parte superior · Cortes más grandes</div>
+          </div>
+          <span class="zone-count" id="zc-base">2</span>
+        </div>
+        <div class="zone-slots" id="zs-base"></div>
+      </div>
+      <!-- MEDIO -->
+      <div class="zone-panel medio">
+        <div class="zone-header">
+          <i class="ti ti-square-rounded zone-header-icon"></i>
+          <div>
+            <div class="zone-header-title">Zona Media</div>
+            <div class="zone-header-sub">Sección central · Cortes medianos</div>
+          </div>
+          <span class="zone-count" id="zc-medio">2</span>
+        </div>
+        <div class="zone-slots" id="zs-medio"></div>
+      </div>
+      <!-- APICE -->
+      <div class="zone-panel apice">
+        <div class="zone-header">
+          <i class="ti ti-square-rounded-bottom zone-header-icon"></i>
+          <div>
+            <div class="zone-header-title">Zona Ápice</div>
+            <div class="zone-header-sub">Punta del corazón · Cortes más pequeños</div>
+          </div>
+          <span class="zone-count" id="zc-apice">1</span>
+        </div>
+        <div class="zone-slots" id="zs-apice"></div>
+      </div>
+    </div>
+
+    <!-- Anatomy mini panel -->
+    <div class="anatomy-card card">
+      <div class="card-head">
+        <i class="ti ti-heart-filled" style="color:var(--red)"></i>
+        <h3>Mapa anatómico</h3>
+        <span class="badge b-ok"><i class="ti ti-brain"></i> IA</span>
+      </div>
+      <div style="display:flex;justify-content:center;padding:18px 0 8px">
+        <svg width="180" height="230" viewBox="0 0 180 230" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="hcp2">
+              <path d="M90,28 C74,13 38,16 36,54 C34,92 56,118 77,143 C86,154 90,172 90,218 C90,172 94,154 103,143 C124,118 146,92 144,54 C142,16 106,13 90,28Z"/>
+            </clipPath>
+          </defs>
+          <!-- Vessel stumps -->
+          <rect x="68" y="4" width="16" height="26" rx="4" fill="#0a0d14"/>
+          <rect x="87" y="2" width="13" height="28" rx="4" fill="#0a0d14"/>
+          <!-- Zones -->
+          <g clip-path="url(#hcp2)">
+            <rect x="0" y="0" width="180" height="90" fill="#a0260f" id="h2z-base"/>
+            <rect x="0" y="90" width="180" height="74" fill="#7b1e3a" id="h2z-medio"/>
+            <rect x="0" y="164" width="180" height="60" fill="#3a1e6e" id="h2z-apice"/>
+          </g>
+          <!-- Dividers -->
+          <line x1="20" y1="90" x2="160" y2="90" stroke="rgba(255,255,255,.35)" stroke-width="1.2" stroke-dasharray="4,3" clip-path="url(#hcp2)"/>
+          <line x1="28" y1="164" x2="152" y2="164" stroke="rgba(255,255,255,.35)" stroke-width="1.2" stroke-dasharray="4,3" clip-path="url(#hcp2)"/>
+          <!-- Outline -->
+          <path d="M90,28 C74,13 38,16 36,54 C34,92 56,118 77,143 C86,154 90,172 90,218 C90,172 94,154 103,143 C124,118 146,92 144,54 C142,16 106,13 90,28Z" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+          <!-- Labels + counts -->
+          <text x="90" y="48" text-anchor="middle" fill="rgba(255,255,255,.9)" font-family="Syne" font-size="11" font-weight="700">BASE</text>
+          <circle cx="90" cy="65" r="12" fill="rgba(255,255,255,.15)" id="h2b-bg"/>
+          <text x="90" y="69" text-anchor="middle" fill="#fff" font-family="DM Mono" font-size="11" font-weight="500" id="h2b-n">2</text>
+          <text x="90" y="132" text-anchor="middle" fill="rgba(255,255,255,.9)" font-family="Syne" font-size="11" font-weight="700">MEDIO</text>
+          <circle cx="90" cy="148" r="12" fill="rgba(255,255,255,.15)"/>
+          <text x="90" y="152" text-anchor="middle" fill="#fff" font-family="DM Mono" font-size="11" font-weight="500" id="h2m-n">2</text>
+          <text x="90" y="186" text-anchor="middle" fill="rgba(255,255,255,.9)" font-family="Syne" font-size="11" font-weight="700">ÁPICE</text>
+          <circle cx="90" cy="200" r="12" fill="rgba(255,255,255,.15)"/>
+          <text x="90" y="204" text-anchor="middle" fill="#fff" font-family="DM Mono" font-size="11" font-weight="500" id="h2a-n">1</text>
+        </svg>
+      </div>
+      <div class="anatomy-zone-list">
+        <div class="az-row base"><div class="az-dot base"></div><span class="az-name">Base</span><span class="az-count" id="az-base">2 cortes</span></div>
+        <div class="az-row medio"><div class="az-dot medio"></div><span class="az-name">Medio</span><span class="az-count" id="az-medio">2 cortes</span></div>
+        <div class="az-row apice"><div class="az-dot apice"></div><span class="az-name">Ápice</span><span class="az-count" id="az-apice">1 corte</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PHASE 3 ══ -->
+<div id="ph3" style="display:none" class="fu">
+  <div class="notice ok">
+    <i class="ti ti-3d-cube-sphere"></i>
+    <span>Los 5 cortes fueron ordenados y asignados correctamente. La figura completa del corazón está lista para el análisis. Las zonas en blanco simulan tejido necrótico estimado basado en la tinción TTC.</span>
+  </div>
+  <div class="recon-layout">
+    <div>
+      <div class="heart-label">Figura completa del corazón — WIS-0248</div>
+      <div class="heart-display">
+        <!-- BIG heart SVG -->
+        <svg width="270" height="340" viewBox="0 0 200 270" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="hcp3">
+              <path d="M100,32 C84,14 44,18 42,60 C40,104 64,132 86,158 C96,170 100,192 100,254 C100,192 104,170 114,158 C136,132 160,104 158,60 C156,18 116,14 100,32Z"/>
+            </clipPath>
+            <radialGradient id="rg3-base" cx="50%" cy="35%" r="65%">
+              <stop offset="0%" stop-color="#c43018"/><stop offset="100%" stop-color="#7b1010"/>
+            </radialGradient>
+            <radialGradient id="rg3-medio" cx="50%" cy="50%" r="65%">
+              <stop offset="0%" stop-color="#a02850"/><stop offset="100%" stop-color="#5a0e28"/>
+            </radialGradient>
+            <radialGradient id="rg3-apice" cx="50%" cy="65%" r="65%">
+              <stop offset="0%" stop-color="#5030a0"/><stop offset="100%" stop-color="#1e0e50"/>
+            </radialGradient>
+            <filter id="glow3">
+              <feGaussianBlur stdDeviation="3" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <!-- Vessels -->
+          <rect x="72" y="5" width="18" height="28" rx="5" fill="#080c14"/>
+          <rect x="94" y="3" width="14" height="30" rx="5" fill="#080c14"/>
+          <rect x="112" y="8" width="11" height="22" rx="4" fill="#080c14"/>
+          <rect x="73" y="6" width="16" height="26" rx="4" fill="#1a0808"/>
+          <rect x="95" y="4" width="12" height="28" rx="4" fill="#1a0808"/>
+          <!-- Zones clipped to heart -->
+          <g clip-path="url(#hcp3)">
+            <rect x="0" y="0" width="200" height="105" fill="url(#rg3-base)" class="zone-live"/>
+            <rect x="0" y="105" width="200" height="84" fill="url(#rg3-medio)" class="zone-live" style="animation-delay:.5s"/>
+            <rect x="0" y="189" width="200" height="70" fill="url(#rg3-apice)" class="zone-live" style="animation-delay:1s"/>
+            <!-- Necrosis blobs -->
+            <ellipse cx="86" cy="64" rx="18" ry="13" fill="#f2ede6" opacity=".9" transform="rotate(-10 86 64)"/>
+            <ellipse cx="112" cy="76" rx="11" ry="9" fill="#f2ede6" opacity=".85"/>
+            <ellipse cx="90" cy="147" rx="14" ry="10" fill="#f2ede6" opacity=".87" transform="rotate(6 90 147)"/>
+            <ellipse cx="100" cy="218" rx="8" ry="6" fill="#f2ede6" opacity=".78"/>
+            <!-- Slice outlines (ghost ellipses) -->
+            <ellipse cx="62" cy="56" rx="24" ry="18" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1" stroke-dasharray="3,2"/>
+            <ellipse cx="136" cy="64" rx="20" ry="15" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1" stroke-dasharray="3,2"/>
+          </g>
+          <!-- Dividers -->
+          <line x1="20" y1="105" x2="180" y2="105" stroke="rgba(255,255,255,.38)" stroke-width="1.5" stroke-dasharray="5,4" clip-path="url(#hcp3)"/>
+          <line x1="30" y1="189" x2="170" y2="189" stroke="rgba(255,255,255,.38)" stroke-width="1.5" stroke-dasharray="5,4" clip-path="url(#hcp3)"/>
+          <!-- Outer glow outline -->
+          <path d="M100,32 C84,14 44,18 42,60 C40,104 64,132 86,158 C96,170 100,192 100,254 C100,192 104,170 114,158 C136,132 160,104 158,60 C156,18 116,14 100,32Z" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="2" filter="url(#glow3)"/>
+          <!-- Zone labels -->
+          <text x="100" y="52" text-anchor="middle" fill="rgba(255,255,255,.92)" font-family="Syne" font-size="11" font-weight="700" letter-spacing="1">BASE</text>
+          <text x="100" y="63" text-anchor="middle" fill="rgba(255,255,255,.45)" font-family="DM Sans" font-size="9">2 cortes</text>
+          <text x="100" y="147" text-anchor="middle" fill="rgba(255,255,255,.92)" font-family="Syne" font-size="11" font-weight="700" letter-spacing="1">MEDIO</text>
+          <text x="100" y="158" text-anchor="middle" fill="rgba(255,255,255,.45)" font-family="DM Sans" font-size="9">2 cortes</text>
+          <text x="100" y="215" text-anchor="middle" fill="rgba(255,255,255,.92)" font-family="Syne" font-size="11" font-weight="700" letter-spacing="1">ÁPICE</text>
+          <text x="100" y="226" text-anchor="middle" fill="rgba(255,255,255,.45)" font-family="DM Sans" font-size="9">1 corte</text>
+        </svg>
+        <div class="heart-legend">
+          <div class="hl-item"><div class="hl-dot" style="background:var(--base-b)"></div>Base</div>
+          <div class="hl-item"><div class="hl-dot" style="background:var(--medio-b)"></div>Medio</div>
+          <div class="hl-item"><div class="hl-dot" style="background:var(--apice-b)"></div>Ápice</div>
+          <div class="hl-item"><div class="hl-dot" style="background:#f2ede6;border:1px solid #ccc"></div>Necrosis estimada</div>
+        </div>
+      </div>
+
+      <!-- Slice strip -->
+      <div class="strip-title"><i class="ti ti-arrow-down-right" style="font-size:12px"></i> Cortes ordenados: Base → Ápice</div>
+      <div class="strip" id="strip3"></div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stat-cards">
+      <div class="stat-card">
+        <div class="scard-head base">
+          <span class="scard-title">Zona Base</span>
+          <i class="ti ti-circle-half-2 scard-icon"></i>
+        </div>
+        <div class="scard-body">
+          <div><div class="sv">2</div><div class="sl">Cortes</div></div>
+          <div><div class="sv">95.4</div><div class="sl">Área prom. mm²</div></div>
+        </div>
+        <div class="prog-wrap">
+          <div class="prog-row"><span>Cobertura</span><span>100%</span></div>
+          <div class="prog-track"><div class="prog-fill base" style="width:100%"></div></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="scard-head medio">
+          <span class="scard-title">Zona Media</span>
+          <i class="ti ti-circle-half-2 scard-icon"></i>
+        </div>
+        <div class="scard-body">
+          <div><div class="sv">2</div><div class="sl">Cortes</div></div>
+          <div><div class="sv">68.2</div><div class="sl">Área prom. mm²</div></div>
+        </div>
+        <div class="prog-wrap">
+          <div class="prog-row"><span>Cobertura</span><span>100%</span></div>
+          <div class="prog-track"><div class="prog-fill medio" style="width:100%"></div></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="scard-head apice">
+          <span class="scard-title">Zona Ápice</span>
+          <i class="ti ti-circle-half-2 scard-icon"></i>
+        </div>
+        <div class="scard-body">
+          <div><div class="sv">1</div><div class="sl">Corte</div></div>
+          <div><div class="sv">38.7</div><div class="sl">Área mm²</div></div>
+        </div>
+        <div class="prog-wrap">
+          <div class="prog-row"><span>Cobertura</span><span>80%</span></div>
+          <div class="prog-track"><div class="prog-fill apice" style="width:80%"></div></div>
+        </div>
+      </div>
+      <div class="recon-ready">
+        <i class="ti ti-rocket"></i>
+        <span>La figura completa está lista. Los 5 cortes ordenados serán enviados al modelo de detección de necrosis en el siguiente paso.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PHASE 4 ══ -->
+<div id="ph4" style="display:none" class="fu">
+  <!-- AI stage (while running) -->
+  <div id="ai-stage">
+    <div class="ai-stage">
+      <div class="ai-orb"><i class="ti ti-brain"></i></div>
+      <div class="ai-title">Analizando tejido isquémico por zona</div>
+      <div class="ai-sub">WiSAR-ViT v1.3 procesa los 5 cortes ordenados buscando tejido necrótico zona por zona</div>
+      <div class="ai-bar-wrap">
+        <div class="ai-bar-row">
+          <span id="ai-lbl">Iniciando análisis…</span>
+          <strong id="ai-pct">0%</strong>
+        </div>
+        <div class="prog-track"><div class="prog-fill" id="ai-bar" style="width:0%;background:linear-gradient(90deg,var(--blue),var(--blue-2))"></div></div>
+      </div>
+      <div class="ai-steps">
+        <div class="ai-step active" id="ais1"><i class="ti ti-loader" id="aii1"></i>Preprocesando los 5 cortes ordenados</div>
+        <div class="ai-step" id="ais2"><i class="ti ti-circle" id="aii2"></i>Analizando Zona Base (2 cortes)</div>
+        <div class="ai-step" id="ais3"><i class="ti ti-circle" id="aii3"></i>Analizando Zona Media (2 cortes)</div>
+        <div class="ai-step" id="ais4"><i class="ti ti-circle" id="aii4"></i>Analizando Zona Ápice (1 corte)</div>
+        <div class="ai-step" id="ais5"><i class="ti ti-circle" id="aii5"></i>Calculando métricas globales por zona</div>
+        <div class="ai-step" id="ais6"><i class="ti ti-circle" id="aii6"></i>Generando mapa final de necrosis</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div id="ai-results" style="display:none" class="fu">
+    <div class="done-banner">
+      <div class="done-icon"><i class="ti ti-circle-check"></i></div>
+      <div>
+        <div class="done-title">Análisis completado · 6.4 s · 5 cortes procesados</div>
+        <div class="done-sub">Se detectó necrosis en las 3 zonas. Se requiere revisión del especialista antes de guardar.</div>
+      </div>
+    </div>
+
+    <div class="results-wrap">
+      <div>
+        <!-- Heart with necrosis map -->
+        <div class="heart-label">Mapa de necrosis detectada por zona</div>
+        <div style="display:flex;justify-content:center;margin-bottom:16px">
+          <svg width="230" height="295" viewBox="0 0 200 270" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <clipPath id="hcp4">
+                <path d="M100,32 C84,14 44,18 42,60 C40,104 64,132 86,158 C96,170 100,192 100,254 C100,192 104,170 114,158 C136,132 160,104 158,60 C156,18 116,14 100,32Z"/>
+              </clipPath>
+              <radialGradient id="rg4b" cx="50%" cy="35%" r="65%">
+                <stop offset="0%" stop-color="#c43018"/><stop offset="100%" stop-color="#7b1010"/>
+              </radialGradient>
+              <radialGradient id="rg4m" cx="50%" cy="50%" r="65%">
+                <stop offset="0%" stop-color="#a02850"/><stop offset="100%" stop-color="#5a0e28"/>
+              </radialGradient>
+              <radialGradient id="rg4a" cx="50%" cy="65%" r="65%">
+                <stop offset="0%" stop-color="#5030a0"/><stop offset="100%" stop-color="#1e0e50"/>
+              </radialGradient>
+            </defs>
+            <rect x="73" y="6" width="16" height="26" rx="4" fill="#1a0808"/>
+            <rect x="95" y="4" width="12" height="28" rx="4" fill="#1a0808"/>
+            <g clip-path="url(#hcp4)">
+              <rect x="0" y="0" width="200" height="105" fill="url(#rg4b)"/>
+              <rect x="0" y="105" width="200" height="84" fill="url(#rg4m)"/>
+              <rect x="0" y="189" width="200" height="70" fill="url(#rg4a)"/>
+              <!-- Necrosis patches + golden contours -->
+              <ellipse cx="84" cy="62" rx="19" ry="14" fill="#f2ede6" opacity=".9" transform="rotate(-10 84 62)"/>
+              <ellipse cx="113" cy="74" rx="12" ry="9" fill="#f2ede6" opacity=".87"/>
+              <ellipse cx="84" cy="62" rx="20" ry="15" fill="none" stroke="#FFD700" stroke-width="1.8" stroke-dasharray="4,2.5" transform="rotate(-10 84 62)"/>
+              <ellipse cx="113" cy="74" rx="13" ry="10" fill="none" stroke="#FFD700" stroke-width="1.8" stroke-dasharray="4,2.5"/>
+              <ellipse cx="89" cy="146" rx="15" ry="11" fill="#f2ede6" opacity=".87" transform="rotate(6 89 146)"/>
+              <ellipse cx="89" cy="146" rx="16" ry="12" fill="none" stroke="#FFD700" stroke-width="1.8" stroke-dasharray="4,2.5" transform="rotate(6 89 146)"/>
+              <ellipse cx="100" cy="216" rx="9" ry="7" fill="#f2ede6" opacity=".79"/>
+              <ellipse cx="100" cy="216" rx="10" ry="8" fill="none" stroke="#FFD700" stroke-width="1.8" stroke-dasharray="4,2.5"/>
+            </g>
+            <line x1="20" y1="105" x2="180" y2="105" stroke="rgba(255,255,255,.38)" stroke-width="1.5" stroke-dasharray="5,4" clip-path="url(#hcp4)"/>
+            <line x1="30" y1="189" x2="170" y2="189" stroke="rgba(255,255,255,.38)" stroke-width="1.5" stroke-dasharray="5,4" clip-path="url(#hcp4)"/>
+            <path d="M100,32 C84,14 44,18 42,60 C40,104 64,132 86,158 C96,170 100,192 100,254 C100,192 104,170 114,158 C136,132 160,104 158,60 C156,18 116,14 100,32Z" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>
+            <text x="100" y="50" text-anchor="middle" fill="rgba(255,255,255,.9)" font-family="Syne" font-size="10" font-weight="700">BASE · 31.4%</text>
+            <text x="100" y="144" text-anchor="middle" fill="rgba(255,255,255,.9)" font-family="Syne" font-size="10" font-weight="700">MEDIO · 28.2%</text>
+            <text x="100" y="210" text-anchor="middle" fill="rgba(255,255,255,.9)" font-family="Syne" font-size="10" font-weight="700">ÁPICE · 20.1%</text>
+          </svg>
+        </div>
+        <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:18px">
+          <div class="hl-item"><div class="hl-dot" style="background:#c43018"></div>Tejido viable</div>
+          <div class="hl-item"><div class="hl-dot" style="background:#f2ede6;border:1px solid #ccc"></div>Necrosis</div>
+          <div class="hl-item"><div class="hl-dot" style="background:#FFD700"></div>Contorno IA</div>
+        </div>
+
+        <!-- Zone result cards -->
+        <div class="result-zone">
+          <div class="rz-head base"><div><div class="rz-title">Zona Base</div><div class="rz-sub">2 cortes · Parte superior</div></div><div class="rz-pct">31.4%</div></div>
+          <div class="rz-body">
+            <div class="bar-row"><div class="bar-lbls"><span>Tejido necrótico</span><strong>31.4%</strong></div><div class="bar-track"><div class="bar-fill base" style="width:31.4%"></div></div></div>
+            <div class="rz-metrics">
+              <div class="rz-metric"><div class="rz-mval" style="color:var(--red)">31.4%</div><div class="rz-mlbl">Necrosis (IA)</div></div>
+              <div class="rz-metric"><div class="rz-mval">48.3</div><div class="rz-mlbl">Área mm²</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="result-zone">
+          <div class="rz-head medio"><div><div class="rz-title">Zona Media</div><div class="rz-sub">2 cortes · Sección central</div></div><div class="rz-pct">28.2%</div></div>
+          <div class="rz-body">
+            <div class="bar-row"><div class="bar-lbls"><span>Tejido necrótico</span><strong>28.2%</strong></div><div class="bar-track"><div class="bar-fill medio" style="width:28.2%"></div></div></div>
+            <div class="rz-metrics">
+              <div class="rz-metric"><div class="rz-mval" style="color:var(--red)">28.2%</div><div class="rz-mlbl">Necrosis (IA)</div></div>
+              <div class="rz-metric"><div class="rz-mval">38.1</div><div class="rz-mlbl">Área mm²</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="result-zone">
+          <div class="rz-head apice"><div><div class="rz-title">Zona Ápice</div><div class="rz-sub">1 corte · Punta del corazón</div></div><div class="rz-pct">20.1%</div></div>
+          <div class="rz-body">
+            <div class="bar-row"><div class="bar-lbls"><span>Tejido necrótico</span><strong>20.1%</strong></div><div class="bar-track"><div class="bar-fill apice" style="width:20.1%"></div></div></div>
+            <div class="rz-metrics">
+              <div class="rz-metric"><div class="rz-mval" style="color:var(--red)">20.1%</div><div class="rz-mlbl">Necrosis (IA)</div></div>
+              <div class="rz-metric"><div class="rz-mval">21.4</div><div class="rz-mlbl">Área mm²</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <!-- Total card -->
+        <div class="total-card">
+          <div class="tc-head">
+            <h3>Resultado global</h3>
+            <div><div class="tc-pct">29.8%</div><div class="tc-pct-lbl">Necrosis total</div></div>
+          </div>
+          <div class="tc-body">
+            <div class="tc-row"><span>Cortes analizados</span><strong>5</strong></div>
+            <div class="tc-row"><span>Zona más afectada</span><strong>Base · 31.4%</strong></div>
+            <div class="tc-row"><span>Área total necrótica</span><strong>107.8 mm²</strong></div>
+            <div class="tc-row"><span>Índice Dice promedio</span><strong>0.91</strong></div>
+            <div class="tc-row"><span>Tiempo de análisis</span><strong>6.4 s</strong></div>
+            <div class="tc-row"><span>Modelo</span><strong>WiSAR-ViT v1.3</strong></div>
+          </div>
+        </div>
+
+        <!-- Validation -->
+        <div class="val-card">
+          <div class="val-head card-head"><i class="ti ti-user-check"></i><h3>Validación del especialista</h3></div>
+          <div class="val-body">
+            <label class="radio-opt sel-ok" id="ro1" onclick="selectRadio('ok')">
+              <input type="radio" name="val" checked style="accent-color:var(--teal);margin-top:2px">
+              <div><div class="radio-opt-title" style="color:#0b6040">Aprobado — resultado correcto</div><div class="radio-opt-sub">La segmentación por zonas es precisa.</div></div>
+            </label>
+            <label class="radio-opt" id="ro2" onclick="selectRadio('warn')">
+              <input type="radio" name="val" style="accent-color:var(--amber);margin-top:2px">
+              <div><div class="radio-opt-title">Aprobado con corrección</div><div class="radio-opt-sub">Ajustar uno o más valores manualmente.</div></div>
+            </label>
+            <label class="radio-opt" id="ro3" onclick="selectRadio('err')">
+              <input type="radio" name="val" style="accent-color:var(--red);margin-top:2px">
+              <div><div class="radio-opt-title" style="color:var(--red)">Rechazado</div><div class="radio-opt-sub">La segmentación no es confiable.</div></div>
+            </label>
+            <div class="field-label">% Necrosis manual (referencia)</div>
+            <input class="field-input" type="number" step="0.1" placeholder="Ej. 30.2 — opcional">
+            <div class="field-label">Comentarios</div>
+            <textarea class="field-input" placeholder="Observaciones sobre la segmentación por zona…"></textarea>
+            <button class="btn btn-success" style="width:100%;justify-content:center" onclick="alert('Experimento WIS-0248 guardado.')">
+              <i class="ti ti-circle-check"></i> Validar y guardar experimento
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /phase-body -->
+
+<!-- ═══ ACTION FOOTER ═══ -->
+<div class="action-footer">
+  <button class="btn btn-ghost" id="btn-back" style="display:none" onclick="goPhase(-1)">
+    <i class="ti ti-arrow-left"></i> Regresar
+  </button>
+  <button class="btn btn-ghost" onclick="if(confirm('¿Cancelar y descartar cambios?'))alert('Cancelado.')">
+    <i class="ti ti-x"></i> Cancelar
+  </button>
+  <div class="action-right">
+    <button class="btn" id="btn-draft"><i class="ti ti-device-floppy"></i> Guardar borrador</button>
+    <button class="btn btn-primary" id="btn-next" onclick="goPhase(1)">
+      <span id="btn-next-lbl">Continuar: clasificar cortes</span>
+      <i class="ti ti-arrow-right"></i>
+    </button>
+  </div>
+</div>
+</div><!-- /workspace -->
+
+<script>
+/* ═══════════ DATA ═══════════ */
+var slices = [
+  { id:'A', name:'IMG_001.tiff', size:'2.4 MB', px:'1024×1024', w:100, zone:'base',  necro:34, col:'#8B1A1A', cx1:52,cy1:38,rx1:19,ry1:15,cx2:70,cy2:46,rx2:11,ry2:9 },
+  { id:'B', name:'IMG_002.tiff', size:'2.1 MB', px:'1024×1024', w:88,  zone:'base',  necro:29, col:'#7B1818', cx1:46,cy1:35,rx1:16,ry1:12,cx2:63,cy2:42,rx2:9, ry2:7 },
+  { id:'C', name:'IMG_003.tiff', size:'1.8 MB', px:'1024×896',  w:70,  zone:'medio', necro:31, col:'#721428', cx1:40,cy1:30,rx1:13,ry1:10,cx2:55,cy2:36,rx2:8, ry2:6 },
+  { id:'D', name:'IMG_004.tiff', size:'1.5 MB', px:'896×896',   w:56,  zone:'medio', necro:26, col:'#641224', cx1:33,cy1:25,rx1:11,ry1:8, cx2:46,cy2:30,rx2:7, ry2:5 },
+  { id:'E', name:'IMG_005.tiff', size:'1.1 MB', px:'768×768',   w:40,  zone:'apice', necro:20, col:'#361060', cx1:24,cy1:19,rx1:8, ry1:6, cx2:34,cy2:23,rx2:5, ry2:4 },
+];
+var zoneLabel = { base:'Base', medio:'Medio', apice:'Ápice' };
+var zoneBadge = { base:'b-base', medio:'b-medio', apice:'b-apice' };
+var currentPhase = 1;
+var ai4started = false;
+
+/* ═══════════ SVG GENERATORS ═══════════ */
+function sliceSVG(s, sz) {
+  var h = Math.round(sz * .76);
+  var ox = sz/2, oy = h/2;
+  var sc = sz/100;
+  var cx1=s.cx1*sc, cy1=s.cy1*sc, rx1=s.rx1*sc, ry1=s.ry1*sc;
+  var cx2=s.cx2*sc, cy2=s.cy2*sc, rx2=s.rx2*sc, ry2=s.ry2*sc;
+  return `<svg width="${sz}" height="${h}" viewBox="0 0 ${sz} ${h}" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="${ox}" cy="${oy}" rx="${sz/2-3}" ry="${h/2-3}" fill="#0a0d14"/>
+    <ellipse cx="${ox}" cy="${oy}" rx="${sz/2-6}" ry="${h/2-6}" fill="${s.col}"/>
+    <ellipse cx="${ox}" cy="${oy}" rx="${sz/2-9}" ry="${h/2-9}" fill="#CC2200" opacity=".82"/>
+    <ellipse cx="${cx1}" cy="${cy1}" rx="${rx1}" ry="${ry1}" fill="#f2ede6" opacity=".9" transform="rotate(-8 ${cx1} ${cy1})"/>
+    <ellipse cx="${cx2}" cy="${cy2}" rx="${rx2}" ry="${ry2}" fill="#f2ede6" opacity=".82"/>
+  </svg>`;
+}
+
+/* ═══════════ PHASE 1 ═══════════ */
+function renderP1() {
+  var g = document.getElementById('img-grid-1');
+  if (!g) return;
+  g.innerHTML = slices.map(function(s) {
+    return `<div class="img-card">
+      <div class="img-thumb">${sliceSVG(s,90)}<div class="img-check"><i class="ti ti-check"></i></div></div>
+      <div class="img-info">
+        <div class="img-name">${s.name}</div>
+        <div class="img-meta"><span>${s.size}</span><span>${s.px}</span></div>
+      </div>
+      <div class="img-zone">
+        <span class="badge ${zoneBadge[s.zone]}">${zoneLabel[s.zone]}</span>
+        <span style="font-size:10px;color:var(--ink-3)">Corte ${s.id}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function doUpload() {
+  var dz = document.getElementById('drop-zone');
+  dz.innerHTML = `<div class="upload-icon" style="background:#e8f8f2;border-color:var(--teal);color:var(--teal)"><i class="ti ti-circle-check"></i></div>
+    <div class="upload-title" style="color:#0b6040">5 imágenes cargadas correctamente</div>
+    <div class="upload-sub" style="color:#1a5e40">12.3 MB · Verificación de calidad completada</div>`;
+  renderP1();
+}
+
+/* ═══════════ PHASE 2 ═══════════ */
+function renderP2() {
+  ['base','medio','apice'].forEach(function(z) {
+    var lane = document.getElementById('zs-'+z);
+    var items = slices.filter(function(s){ return s.zone===z; });
+    if (!items.length) {
+      lane.innerHTML = `<div class="zone-empty-msg"><i class="ti ti-drag-drop"></i> Sin cortes asignados</div>`;
+      return;
+    }
+    lane.innerHTML = items.map(function(s) {
+      return `<div class="zone-slice-item">
+        <i class="ti ti-grip-vertical drag-handle"></i>
+        ${sliceSVG(s,46)}
+        <div style="flex:1;min-width:0">
+          <div class="zsi-name">${s.name}</div>
+          <div class="zsi-size">${s.px} · ${s.size}</div>
+        </div>
+        <span class="ai-tag"><i class="ti ti-brain"></i> IA</span>
+        <select class="zone-sel" onchange="moveSlice('${s.id}',this.value)">
+          <option value="base"${s.zone==='base'?' selected':''}>Base</option>
+          <option value="medio"${s.zone==='medio'?' selected':''}>Medio</option>
+          <option value="apice"${s.zone==='apice'?' selected':''}>Ápice</option>
+        </select>
+      </div>`;
+    }).join('');
+  });
+  updateCounts();
+}
+
+function moveSlice(id, z) {
+  var s = slices.find(function(x){ return x.id===id; });
+  if (s) s.zone = z;
+  renderP2();
+}
+
+function updateCounts() {
+  ['base','medio','apice'].forEach(function(z) {
+    var n = slices.filter(function(s){ return s.zone===z; }).length;
+    var el = document.getElementById('zc-'+z); if(el) el.textContent=n;
+    var az = document.getElementById('az-'+z); if(az) az.textContent=n+(n===1?' corte':' cortes');
+    var h2b=document.getElementById('h2b-n'), h2m=document.getElementById('h2m-n'), h2a=document.getElementById('h2a-n');
+    if(z==='base'&&h2b) h2b.textContent=n;
+    if(z==='medio'&&h2m) h2m.textContent=n;
+    if(z==='apice'&&h2a) h2a.textContent=n;
+  });
+}
+
+/* ═══════════ PHASE 3 STRIP ═══════════ */
+function renderStrip() {
+  var c = document.getElementById('strip3'); if(!c) return;
+  var ordered = slices.slice().sort(function(a,b){ return b.w-a.w; });
+  c.innerHTML = '';
+  ordered.forEach(function(s, i) {
+    var sz = 34 + Math.round((s.w/100)*60);
+    var seg = document.createElement('div');
+    seg.className = 'strip-seg';
+    if (i > 0) {
+      var conn = document.createElement('div');
+      conn.className = 'strip-conn';
+      seg.appendChild(conn);
+    }
+    var item = document.createElement('div');
+    item.className = 'strip-item';
+    item.innerHTML = `<div class="strip-lbl">${s.name.replace('.tiff','')}</div>
+      ${sliceSVG(s, sz)}
+      <div class="strip-zone ${s.zone}">${zoneLabel[s.zone]}</div>
+      <div class="strip-pct">${s.necro}% nec.</div>`;
+    seg.appendChild(item);
+    c.appendChild(seg);
+  });
+}
+
+/* ═══════════ PHASE 4 AI ═══════════ */
+function runAI() {
+  if (ai4started) return; ai4started = true;
+  var steps = [
+    {lbl:'Preprocesando 5 cortes ordenados…', pct:16},
+    {lbl:'Analizando Zona Base (2 cortes)…',  pct:36},
+    {lbl:'Analizando Zona Media (2 cortes)…', pct:58},
+    {lbl:'Analizando Zona Ápice (1 corte)…',  pct:76},
+    {lbl:'Calculando métricas globales…',      pct:90},
+    {lbl:'Generando mapa de necrosis…',        pct:100}
+  ];
+  var i = 0;
+  function tick() {
+    if (i >= steps.length) {
+      setTimeout(function() {
+        document.getElementById('ai-stage').style.display='none';
+        var res = document.getElementById('ai-results');
+        res.style.display=''; res.classList.add('fu');
+        var nb = document.getElementById('btn-next');
+        nb.innerHTML='<i class="ti ti-circle-check"></i> Guardar experimento';
+        nb.className='btn btn-success';
+        nb.onclick=function(){ alert('Experimento WIS-0248 guardado exitosamente.'); };
+        document.getElementById('btn-draft').style.display='none';
+      }, 600);
+      return;
+    }
+    var st = steps[i];
+    document.getElementById('ai-lbl').textContent = st.lbl;
+    document.getElementById('ai-pct').textContent = st.pct+'%';
+    document.getElementById('ai-bar').style.width = st.pct+'%';
+    if (i > 0) {
+      var prev = document.getElementById('ais'+i);
+      var pi   = document.getElementById('aii'+i);
+      if(prev){ prev.className='ai-step done'; }
+      if(pi)  { pi.className='ti ti-circle-check'; }
+    }
+    var cur = document.getElementById('ais'+(i+1));
+    var ci  = document.getElementById('aii'+(i+1));
+    if(cur){ cur.className='ai-step active'; }
+    if(ci) { ci.className='ti ti-loader'; }
+    i++;
+    setTimeout(tick, 1050);
+  }
+  tick();
+}
+
+/* ═══════════ RADIO VALIDATION ═══════════ */
+function selectRadio(type) {
+  ['ro1','ro2','ro3'].forEach(function(id){ document.getElementById(id).className='radio-opt'; });
+  var map = { ok:'ro1', warn:'ro2', err:'ro3' };
+  document.getElementById(map[type]).classList.add('sel-'+type);
+}
+
+/* ═══════════ PHASE NAVIGATION ═══════════ */
+var nextLabels = ['','Continuar: clasificar cortes','Ver reconstrucción del corazón','Iniciar análisis de necrosis','Guardar experimento'];
+
+function goPhase(dir) {
+  var n = currentPhase + dir;
+  if (n < 1 || n > 4) return;
+  currentPhase = n;
+  showPhase(n);
+}
+
+function showPhase(n) {
+  for (var i=1;i<=4;i++) {
+    var el=document.getElementById('ph'+i);
+    if(el) el.style.display=(i===n)?'':'none';
+  }
+  // Stepper
+  for (var i=1;i<=4;i++) {
+    var sn=document.getElementById('sn'+i);
+    var sl=document.getElementById('sl'+i);
+    if(!sn) continue;
+    if(i < n) {
+      sn.className='step-num done';
+      sn.innerHTML='<i class="ti ti-check" style="font-size:11px"></i>';
+      sl.className='step-label';
+    } else if(i === n) {
+      sn.className='step-num active';
+      sn.textContent=i;
+      sl.className='step-label active';
+    } else {
+      sn.className='step-num';
+      sn.textContent=i;
+      sl.className='step-label';
+    }
+  }
+  // Action bar
+  var btnBack = document.getElementById('btn-back');
+  var btnNext = document.getElementById('btn-next');
+  var btnDraft = document.getElementById('btn-draft');
+  btnBack.style.display = n>1?'':'none';
+  if (n===4 && !ai4started) {
+    // keep as "start analysis" until AI completes
+  }
+  if (n<4) {
+    btnNext.innerHTML='<span>'+nextLabels[n]+'</span><i class="ti ti-arrow-right"></i>';
+    btnNext.className='btn btn-primary';
+    btnNext.onclick=function(){ goPhase(1); };
+    btnDraft.style.display='';
+  }
+  // Per-phase inits
+  if(n===2) renderP2();
+  if(n===3) renderStrip();
+  if(n===4) runAI();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ═══════════ INIT ═══════════ */
+doUpload();
+showPhase(1);
+</script>
+</body>
+</html>
